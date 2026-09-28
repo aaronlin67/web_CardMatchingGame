@@ -1,0 +1,388 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 从顶部开始布局 */
+    align-items: center;
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 20px;
+    overflow-y: auto; /* 启用垂直滚动 */
+    min-height: 100vh; /* 确保页面高度至少为视口高度 */
+}
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    margin-bottom: 20px;
+    font-family: "Lucida Console", monospace;
+}
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 100px);
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    width: 650px;
+    height: 550px;
+}
+.effect-Card {
+    display: flex;
+    justify-content: space-between; /* 将按钮等分排列 */
+    width: 650px; /* 让按钮容器占满宽度 */
+    padding: 20px;
+}
+
+.effect-Card button {
+    flex: 1; /* 每个按钮平分容器宽度 */
+    margin: 0 10px; /* 给按钮添加间距 */
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* 添加平滑的背景颜色变化 */
+    font-family: "Copperplate", fantasy;
+}
+
+.effect-Card button:disabled {
+    background-color: #B0C4DE; /* 按钮被禁用后变暗 */
+    cursor: not-allowed; /* 鼠标悬停时显示不可用光标 */
+}
+
+.used-button {
+    background-color: #B0C4DE; /* 使用后按钮变为浅蓝色 */
+    cursor: not-allowed; /* 改变光标样式，显示按钮不可用 */
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+}
+.card-inner {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    transform: rotateY(0);
+}
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    backface-visibility: hidden;
+    font-size: 36px;
+}
+.card-front {
+    background-color: #007BFF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-back {
+    background-color: #FFFFFF;
+    transform: rotateY(180deg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.hidden {
+    visibility: hidden;
+}
+.reset-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: "Copperplate", fantasy;
+}
+.game-over, .game-win {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-size: 36px;
+    display: none;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-family: "Lucida Handwriting", cursive;
+}
+.game-win {
+    background: rgba(34, 139, 34, 0.9);
+    color: #FFD700;
+    animation: winAnimation 1.5s infinite alternate;
+}
+@keyframes winAnimation {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    100% { transform: translate(-50%, -50%) scale(1.1); }
+}
+.emoji {
+    position: absolute;
+    font-size: 60px;
+    animation: fall linear infinite;
+    cursor: pointer;
+}
+@keyframes fall {
+    0% { top: -10%; }
+    100% { top: 110%; }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* 半透明背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    width: 650px; /* 与游戏版面一致 */
+    height: 550px; /* 与游戏版面一致 */
+    background: black;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.tutorial-image {
+    width: 90%;
+    max-height: 350px; /* 图片占据大部分空间 */
+    object-fit: contain;
+}
+
+.tutorial-text {
+    margin-top: 10px;
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    font-family: "Arial Narrow;", cursive;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: white;
+}
+
+.close-btn:hover {
+    color: #007BFF; /* 鼠标悬停时稍微变亮 */
+}
+
+.modal-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.nav-btn {
+    width: 20%;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #0056b3;
+}
+
+.dots {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    background: #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background: #007BFF;
+}
+
+.slide {
+    display: none;
+}
+
+.slide.active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 默认样式保持不变，适用于桌面端 */
+
+/* 针对屏幕宽度小于768px的设备（通常为手机）进行样式调整 */
+@media (max-width: 768px) {
+    body {
+        height: auto; /* 自适应内容高度 */
+        padding: 10px;
+    }
+
+    .game-info {
+        width: 100%;
+        justify-content: space-around; /* 将时间和尝试数分开显示 */
+        font-size: 25px;
+        margin-top: 20px;
+    }
+
+    .game-board {
+        grid-template-columns: repeat(6, 80px); /* 手机端将卡牌布局调整为5列 */
+        width: auto; /* 宽度自适应 */
+        height: auto; /* 高度自适应 */
+        padding: 10px;
+        gap: 8px; /* 卡牌之间的间距 */
+    }
+
+    .card {
+        width: 80px; /* 缩小卡牌大小 */
+        height: 80px; 
+    }
+
+    .effect-Card {
+        display: flex;
+        flex-direction: column; /* 垂直排列按钮 */
+        align-items: center; /* 居中按钮 */
+        width: 80%; /* 按钮占据全部宽度 */
+    }
+
+    .effect-Card button {
+        width: 90%; /* 按钮占据90%的宽度 */
+        margin: 10px 0; /* 增加上下间距 */
+        padding: 10px;
+    }
+
+    .reset-button {
+        width: 70%;
+        padding: 10px;
+        margin-top: 15px;
+    }
+
+    .game-over, .game-win {
+        width: 90%; /* 提示信息在手机上居中，并且宽度限制为90% */
+    }
+    /* 遊戲規則 */
+        .modal-content {
+        width: 90%; /* 宽度缩小以适配手机屏幕 */
+        height: 80%; /* 高度自动扩展 */
+        padding: 15px;
+    }
+
+    .tutorial-image {
+        width: 100%; /* 图片占据整个宽度 */
+        max-height: 400px; /* 限制图片高度以避免超出屏幕 */
+        margin-bottom: 15px;
+    }
+
+    .tutorial-text {
+        font-size: 20px; /* 缩小字体大小 */
+        margin-top: 5px;
+    }
+
+    .modal-footer {
+        width: 100%;
+        display: flex;
+        flex-direction: column; /* 按钮垂直排列 */
+        justify-content: flex-end; /* 固定在底部 */
+        align-items: center;
+        padding: 10px 0;
+        position: absolute; /* 绝对定位 */
+        bottom: 0; /* 靠近弹窗底部 */
+        background-color: rgba(0, 0, 0, 0.8); /* 添加半透明背景 */
+    }
+
+    .dots {
+        display: flex;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 10px; /* 指示点和按钮的间距 */
+    }
+
+    .nav-btn {
+        width: 90%; /* 按钮占据屏幕宽度 */
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px;
+        margin: 20px 0; /* 上下间距 */
+        font-size: 20px; /* 缩小按钮字体 */
+        height: 37px;
+    }
+
+    .nav-btn:hover {
+        background-color: #0056b3;
+    }
+    .emoji {
+        position: absolute;
+        font-size: 50px; /* 调整 emoji 大小 */
+        animation: fall linear infinite;
+        cursor: pointer;
+
+        /* 限制掉落区域为 game-board 两侧 */
+        left: calc((100% - 650px) / 2 - 50px); /* game-board 左侧 */
+    }
+
+    .emoji:nth-child(odd) {
+        left: calc(100% - ((100% - 650px) / 2) + 10px); /* game-board 右侧 */
+    }
+}
+
+
+
+
+

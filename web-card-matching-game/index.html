@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Matching Game - Emojis</title>
+    <link rel="stylesheet" type="text/css" href="style3.css">
+</head>
+<body>
+    <!-- 規則視窗 -->
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeTutorial()">×</button>
+            <div class="modal-body">
+                <div class="slide active">
+                    <img src="step1.png" alt="Step 1" class="tutorial-image">
+                    <p class="tutorial-text">Start the game by clicking any card in the board,<br> when 2 same cards are flipped, they will disappeared,<br>
+                    if they're not the same they are going to flip back in 1 second.</p>
+                </div>
+                <div class="slide">
+                    <img src="step2.png" alt="Step 2" class="tutorial-image">
+                    <p class="tutorial-text">You can find there's emojis falling both left and right side<br>
+                    Get +5 seconds by clicking the clover.</p>
+                </div>
+                <div class="slide">
+                    <img src="step3.png" alt="Step 3" class="tutorial-image">
+                    <p class="tutorial-text">Be carecul! You will get -10 seconds when filpping the bomb card</p>
+                </div>
+                <div class="slide">
+                    <img src="step4.png" alt="Step 4" class="tutorial-image">
+                    <p class="tutorial-text">You can use these special button! But only one time per game.<br><br>
+                    <br>"Find Matching Card" Can help you to filp the other card<br>which is the same as the one you flipped.<br><br>
+                    <br>"Remove a Bomb" It will randomly remove a bomb in this game<br> to prevent your time get deducted.<br><br>
+                    <br>"More Clover" This will increase the drop rate of "Clover"<br> from 10% to 30% on both side
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="nav-btn" onclick="changeSlide(-1)" style="float: left;">← Previous</button>
+
+                <div class="dots" id="dots-container">
+                <!-- 用JS生成 -->
+                </div>
+
+                <button class="nav-btn" onclick="changeSlide(1)" style="float: right;">Next →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 遊戲資訊 -->
+    <div class="game-info">
+        <div>Time: <span id="time">60</span>s</div>
+        <div>Attempts: <span id="attempts">0</span></div>
+    </div>
+
+    <!-- 功能按鈕 -->
+    <div class="effect-Card">
+        <button id="findMatchBtn" onclick="findAndFlipMatchingCard()">Find Matching Card</button>
+        <button id="removeBombBtn" onclick="removeBombCard()">Remove a Bomb</button>
+        <button id="increaseCloverBtn" onclick="increaseCloverDropRate()">More Clover</button>
+    </div>
+
+    <!-- 遊戲面板 -->
+    <div class="game-board" id="gameBoard">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+
+    <!-- 遊戲結束畫面/重新開始 -->
+    <div class="game-over" id="gameOver">Game Over</div>
+    <div class="game-win" id="gameWin">Excellent! You Win</div>
+    <button class="reset-button" onclick="resetGame()">Reset Game</button>
+
+
+
+    <script src="script1.js"></script>
+</body>
+</html>
